@@ -1,0 +1,30 @@
+﻿<Window x:Class="DrawRectangle.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Пописульки" WindowState="Maximized">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Column="0" VerticalAlignment="Center">
+            <GroupBox Header="Фигуры" FontSize="22" Height="100">
+                <StackPanel>
+                    <RadioButton GroupName="figure" IsChecked="True" Name="rbtnRectangle" FontSize="18">Прямоугольник</RadioButton>
+                    <RadioButton GroupName="figure" Name="rbtnLine" FontSize="18">Линия</RadioButton>
+                </StackPanel>
+            </GroupBox>
+            <GroupBox Header="Тип" FontSize="22" Height="100">
+                <StackPanel>
+                    <RadioButton GroupName="type" IsChecked="True" Name="rbtnRectangleBroken" FontSize="18">Сплошная</RadioButton>
+                    <RadioButton GroupName="type" Name="rbtnLineDashed" FontSize="18">Пунктирная</RadioButton>
+                </StackPanel>
+            </GroupBox>
+            <Button Name="btnClear" FontSize="22" Height="50" Click="btnClear_Click">Очистить поле</Button>
+        </StackPanel>
+        
+        <Viewbox Name="vbContainer" Grid.Column="1">
+            <Canvas x:Name="cnvsDraw" Height="200" Width="350" MouseLeftButtonDown="cnvsDraw_MouseLeftButtonDown"  MouseMove="cnvsDraw_MouseMove" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" MouseLeftButtonUp="cnvsDraw_MouseLeftButtonUp"/>
+        </Viewbox>
+    </Grid>
+</Window>
