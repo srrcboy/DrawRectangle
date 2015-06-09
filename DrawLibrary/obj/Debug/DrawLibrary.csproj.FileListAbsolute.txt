@@ -1,0 +1,5 @@
+C:\Users\Плебан Ирина\Documents\Visual Studio 2013\Projects\ClassLibrary1\DrawLibrary\bin\Debug\DrawLibrary.dll
+C:\Users\Плебан Ирина\Documents\Visual Studio 2013\Projects\ClassLibrary1\DrawLibrary\bin\Debug\DrawLibrary.pdb
+C:\Users\Плебан Ирина\Documents\Visual Studio 2013\Projects\ClassLibrary1\DrawLibrary\obj\Debug\DrawLibrary.dll
+C:\Users\Плебан Ирина\Documents\Visual Studio 2013\Projects\ClassLibrary1\DrawLibrary\obj\Debug\DrawLibrary.pdb
+C:\Users\Плебан Ирина\Documents\Visual Studio 2013\Projects\ClassLibrary1\DrawLibrary\obj\Debug\DrawLibrary.csprojResolveAssemblyReference.cache
