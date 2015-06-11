@@ -16,7 +16,7 @@
             </GroupBox>
             <GroupBox Header="Тип" FontSize="22" Height="100">
                 <StackPanel>
-                    <RadioButton GroupName="type" IsChecked="True" Name="rbtnRectangleBroken" FontSize="18">Сплошная</RadioButton>
+                    <RadioButton GroupName="type" IsChecked="True" Name="rbtnLineBroken" FontSize="18">Сплошная</RadioButton>
                     <RadioButton GroupName="type" Name="rbtnLineDashed" FontSize="18">Пунктирная</RadioButton>
                 </StackPanel>
             </GroupBox>

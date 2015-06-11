@@ -4,6 +4,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media.Animation;
 using DrawLibrary;
 
 namespace DrawRectangle
@@ -23,7 +24,7 @@ namespace DrawRectangle
         private bool moving = false;
         private double _startX;
         private double _startY;
-        private byte numberFigure;
+        private FigureType _figureType;
 
         public MainWindow()
         {
@@ -32,70 +33,81 @@ namespace DrawRectangle
 
         private void cnvsDraw_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            _startX = e.GetPosition((Canvas)sender).X;
-            _startY = e.GetPosition((Canvas)sender).Y;
+            UpdatePosition(sender, e);
             if (rbtnRectangle.IsChecked == true)
             {
-                numberFigure = 1;
-                
-                _currentRectangle =
-               _listRectangles.LastOrDefault(
-                   o =>
-                       (o.StartX <= _startX) &&
-                       (o.FinishX >= _startX) &&
-                       (o.StartY <= _startY) &&
-                       (o.FinishY >= _startY));
+                _figureType = FigureType.Rectangle;
+                _currentRectangle = captureRectangle(_startX, _startY);
                 if (_currentRectangle != null)
                 {
                     moving = true;
                 }
                 else
                 {
-                    if (rbtnLineDashed.IsChecked == true)
-                    {
-                        _currentRectangle = new CDashedRectangle(_startX, _startY, _startX, _startY);
-                    }
-                    else if (rbtnRectangleBroken.IsChecked == true)
-                    {
-                        _currentRectangle = new CBrokenRectangle(_startX, _startY, _startX, _startY);
-                    }
+                    _currentRectangle = CreateRectangle((bool)rbtnLineDashed.IsChecked);
                 }
             }
             else if (rbtnLine.IsChecked == true)
             {
-                numberFigure = 2;
-                _startRectangle =
-               _listRectangles.LastOrDefault(
-                   o =>
-                       (o.StartX <= _startX) &&
-                       (o.FinishX >= _startX) &&
-                       (o.StartY <= _startY) &&
-                       (o.FinishY >= _startY));
-                if (rbtnLineDashed.IsChecked == true)
-                {
-                    _currentLine = new CDashedLine(_startX, _startY, _startX, _startY);
-                }
-                else if (rbtnRectangleBroken.IsChecked == true)
-                {
-                    _currentLine = new CBrokenLine(_startX, _startY, _startX, _startY);
-                }
+                _figureType = FigureType.Line;
+                _startRectangle = captureRectangle(_startX, _startY);
+                _currentLine = CreateLine((bool)rbtnLineDashed.IsChecked);
             }
+        }
+
+        private CLine CreateLine(bool lineType)
+        {
+            if (lineType)
+            {
+                return new CDashedLine(_startX, _startY, _startX, _startY);
+            }
+            else
+            {
+                return new CBrokenLine(_startX, _startY, _startX, _startY);
+            }
+        }
+
+        private CRectangle CreateRectangle(bool lineType)
+        {
+            if (lineType)
+            {
+                return new CDashedRectangle(_startX, _startY, _startX, _startY);
+            }
+            else
+            {
+                return new CBrokenRectangle(_startX, _startY, _startX, _startY);
+            }
+        }
+
+        private CRectangle captureRectangle(double startX, double startY)
+        {
+            return _listRectangles.LastOrDefault(
+                   o =>
+                       (o.StartX <= startX) &&
+                       (o.FinishX >= startX) &&
+                       (o.StartY <= startY) &&
+                       (o.FinishY >= startY));
+        }
+
+        private void UpdatePosition(object sender, MouseEventArgs e)
+        {
+            _startX = e.GetPosition((Canvas)sender).X;
+            _startY = e.GetPosition((Canvas)sender).Y;
         }
 
         private void cnvsDraw_MouseMove(object sender, MouseEventArgs e)
         {
             if (e.LeftButton == MouseButtonState.Pressed) 
             {
-                switch (numberFigure)
+                switch (_figureType)
                 {
-                    case 1:
+                    case FigureType.Rectangle:
                         if (moving) 
                         {
                             double differenceX = e.GetPosition((Canvas) sender).X - _startX;
                             double differenceY = e.GetPosition((Canvas) sender).Y - _startY;
                             _currentRectangle.Move(differenceX, differenceY);
-                            _startX = e.GetPosition((Canvas) sender).X;
-                            _startY = e.GetPosition((Canvas) sender).Y;
+                            UpdatePosition(sender, e);
                             foreach (var line in _listLines)
                             {
                                 line.Draw((Canvas)sender);
@@ -113,7 +125,7 @@ namespace DrawRectangle
                         }
                         break;
 
-                    case 2:
+                    case FigureType.Line:
                         _currentLine.UpdateCoordinates(e.GetPosition((Canvas) sender).X,
                             e.GetPosition((Canvas) sender).Y);
                         _currentLine.Draw((Canvas) sender);
@@ -130,13 +142,7 @@ namespace DrawRectangle
             }
             else if (rbtnLine.IsChecked == true)
             {
-                _finishRectangle =
-               _listRectangles.LastOrDefault(
-                   o =>
-                       (o.StartX <= e.GetPosition((Canvas)sender).X) &&
-                       (o.FinishX >= e.GetPosition((Canvas)sender).X) &&
-                       (o.StartY <= e.GetPosition((Canvas)sender).Y) &&
-                       (o.FinishY >= e.GetPosition((Canvas)sender).Y));
+                _finishRectangle = captureRectangle(e.GetPosition((Canvas)sender).X, e.GetPosition((Canvas)sender).Y);
 
                 var existLink = _listLinks.FirstOrDefault(
                     o => ((o.FirstRectangle == _startRectangle) && (o.SecondRectangle == _finishRectangle)) || ((o.FirstRectangle == _finishRectangle) && (o.SecondRectangle == _startRectangle))); 
@@ -144,7 +150,6 @@ namespace DrawRectangle
                 if ((_startRectangle != null) && (_finishRectangle != null) && (_currentLine != null) && (_startRectangle != _finishRectangle) && (existLink == null))
                 {
                     _listLinks.Add(new CLink(_startRectangle, _finishRectangle, _currentLine));
-
                     _startRectangle.Moving += _currentLine.MoveStart;
                     _finishRectangle.Moving += _currentLine.MoveFinish;
                     _listLines.Add(_currentLine);
@@ -164,7 +169,5 @@ namespace DrawRectangle
             _listLines.Clear();
             _listRectangles.Clear();
         }
-
-       
     }
 }
