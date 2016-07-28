@@ -3,3 +3,8 @@ C:\Users\Плебан Ирина\Documents\Visual Studio 2013\Projects\ClassLibr
 C:\Users\Плебан Ирина\Documents\Visual Studio 2013\Projects\ClassLibrary1\DrawLibrary\obj\Debug\DrawLibrary.dll
 C:\Users\Плебан Ирина\Documents\Visual Studio 2013\Projects\ClassLibrary1\DrawLibrary\obj\Debug\DrawLibrary.pdb
 C:\Users\Плебан Ирина\Documents\Visual Studio 2013\Projects\ClassLibrary1\DrawLibrary\obj\Debug\DrawLibrary.csprojResolveAssemblyReference.cache
+E:\projects\TMP\drawRectangle\DrawLibrary\bin\Debug\DrawLibrary.dll
+E:\projects\TMP\drawRectangle\DrawLibrary\bin\Debug\DrawLibrary.pdb
+E:\projects\TMP\drawRectangle\DrawLibrary\obj\Debug\DrawLibrary.dll
+E:\projects\TMP\drawRectangle\DrawLibrary\obj\Debug\DrawLibrary.pdb
+E:\projects\TMP\drawRectangle\DrawLibrary\obj\Debug\DrawLibrary.csprojResolveAssemblyReference.cache
